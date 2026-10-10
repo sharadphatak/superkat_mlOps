@@ -132,8 +132,8 @@
     "joblib": "1.4.2",
     "streamlit": "1.45.1"
   },
-  "python": "3.12.3",
-  "source_commit": "local",
+  "python": "3.12.15",
+  "source_commit": "c8e90d3344dd5339c9ef858c470c5927eb59c438",
   "model_sha256": "bd99a1db50e6885c079203201c7b30117ff97ec11331f0835157a2a8fa757c8a",
   "prediction_grain": "Product/store row revenue; period and currency unspecified"
 }
