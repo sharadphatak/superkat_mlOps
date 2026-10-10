@@ -1,0 +1,17 @@
+{
+  "selected_algorithm": "random_forest",
+  "baseline_cv_RMSE": 1065.01852918451,
+  "model": {
+    "RMSE": 278.3276383916253,
+    "MAE": 104.90231186103816,
+    "R2": 0.9321078730369173
+  },
+  "baseline": {
+    "RMSE": 1068.1905582201634,
+    "MAE": 840.7941689127993,
+    "R2": -9.706034798551144e-06
+  },
+  "holdout_rows": 1753,
+  "baseline_cv_beaten": true,
+  "quick_test_mode": false
+}

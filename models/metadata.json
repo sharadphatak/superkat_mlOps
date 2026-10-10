@@ -1,0 +1,139 @@
+{
+  "algorithm": "random_forest",
+  "best_parameters": {
+    "model__max_depth": null,
+    "model__min_samples_leaf": 3,
+    "model__n_estimators": 150
+  },
+  "features": [
+    "Product_Weight",
+    "Product_Allocated_Area",
+    "Product_MRP",
+    "Store_Establishment_Year",
+    "Product_Sugar_Content",
+    "Product_Type",
+    "Store_Id",
+    "Store_Size",
+    "Store_Location_City_Type",
+    "Store_Type"
+  ],
+  "numeric": [
+    "Product_Weight",
+    "Product_Allocated_Area",
+    "Product_MRP",
+    "Store_Establishment_Year"
+  ],
+  "categorical": [
+    "Product_Sugar_Content",
+    "Product_Type",
+    "Store_Id",
+    "Store_Size",
+    "Store_Location_City_Type",
+    "Store_Type"
+  ],
+  "categories": {
+    "Product_Sugar_Content": [
+      "low sugar",
+      "no sugar",
+      "regular"
+    ],
+    "Product_Type": [
+      "baking goods",
+      "breads",
+      "breakfast",
+      "canned",
+      "dairy",
+      "frozen foods",
+      "fruits and vegetables",
+      "hard drinks",
+      "health and hygiene",
+      "household",
+      "meat",
+      "others",
+      "seafood",
+      "snack foods",
+      "soft drinks",
+      "starchy foods"
+    ],
+    "Store_Id": [
+      "out001",
+      "out002",
+      "out003",
+      "out004"
+    ],
+    "Store_Size": [
+      "high",
+      "medium",
+      "small"
+    ],
+    "Store_Location_City_Type": [
+      "tier 1",
+      "tier 2",
+      "tier 3"
+    ],
+    "Store_Type": [
+      "departmental store",
+      "food mart",
+      "supermarket type1",
+      "supermarket type2"
+    ]
+  },
+  "sample_input": {
+    "Product_Weight": 13.64,
+    "Product_Allocated_Area": 0.071,
+    "Product_MRP": 157.1,
+    "Store_Establishment_Year": 2009,
+    "Product_Sugar_Content": "no sugar",
+    "Product_Type": "household",
+    "Store_Id": "out004",
+    "Store_Size": "medium",
+    "Store_Location_City_Type": "tier 2",
+    "Store_Type": "supermarket type2"
+  },
+  "evaluation": {
+    "selected_algorithm": "random_forest",
+    "baseline_cv_RMSE": 1065.01852918451,
+    "model": {
+      "RMSE": 278.3276383916253,
+      "MAE": 104.90231186103816,
+      "R2": 0.9321078730369173
+    },
+    "baseline": {
+      "RMSE": 1068.1905582201634,
+      "MAE": 840.7941689127993,
+      "R2": -9.706034798551144e-06
+    },
+    "holdout_rows": 1753,
+    "baseline_cv_beaten": true,
+    "quick_test_mode": false
+  },
+  "split": {
+    "seed": 42,
+    "test_fraction": 0.2,
+    "source_sha256": "b12ec41668e69d71d64ca96f2be78a011087f2a9cac6aba6e5cc920544b21ab2",
+    "raw_rows": 8763,
+    "missing_target_rows_removed": 0,
+    "duplicates_removed": 0,
+    "unnecessary_columns_removed": [
+      "Product_Id"
+    ],
+    "train_rows": 7010,
+    "test_rows": 1753,
+    "train_sha256": "fe3c577689f650efc1b25aa255c132c8dbba328d742099e320e1502b987a827f",
+    "test_sha256": "56706f216c9a53647a6bc09f3898cbcf73ead78b0e94bf4ff0fd602a569d23ec",
+    "scope": "Random holdout: existing product/store distribution; unseen-store performance unproven",
+    "normalization": "Strip/lowercase categorical values; explicit common sugar aliases; no learned preprocessing before split"
+  },
+  "packages": {
+    "numpy": "2.2.6",
+    "pandas": "2.2.3",
+    "scipy": "1.15.3",
+    "scikit-learn": "1.6.1",
+    "joblib": "1.4.2",
+    "streamlit": "1.45.1"
+  },
+  "python": "3.12.3",
+  "source_commit": "local",
+  "model_sha256": "bd99a1db50e6885c079203201c7b30117ff97ec11331f0835157a2a8fa757c8a",
+  "prediction_grain": "Product/store row revenue; period and currency unspecified"
+}

@@ -1,0 +1,61 @@
+{
+  "source_file": "data/SupeKart.csv",
+  "sha256": "b12ec41668e69d71d64ca96f2be78a011087f2a9cac6aba6e5cc920544b21ab2",
+  "rows": 8763,
+  "columns": [
+    "Product_Id",
+    "Product_Weight",
+    "Product_Sugar_Content",
+    "Product_Allocated_Area",
+    "Product_Type",
+    "Product_MRP",
+    "Store_Id",
+    "Store_Establishment_Year",
+    "Store_Size",
+    "Store_Location_City_Type",
+    "Store_Type",
+    "Product_Store_Sales_Total"
+  ],
+  "dtypes": {
+    "Product_Id": "object",
+    "Product_Weight": "float64",
+    "Product_Sugar_Content": "object",
+    "Product_Allocated_Area": "float64",
+    "Product_Type": "object",
+    "Product_MRP": "float64",
+    "Store_Id": "object",
+    "Store_Establishment_Year": "int64",
+    "Store_Size": "object",
+    "Store_Location_City_Type": "object",
+    "Store_Type": "object",
+    "Product_Store_Sales_Total": "float64"
+  },
+  "missing_values": {
+    "Product_Id": 0,
+    "Product_Weight": 0,
+    "Product_Sugar_Content": 0,
+    "Product_Allocated_Area": 0,
+    "Product_Type": 0,
+    "Product_MRP": 0,
+    "Store_Id": 0,
+    "Store_Establishment_Year": 0,
+    "Store_Size": 0,
+    "Store_Location_City_Type": 0,
+    "Store_Type": 0,
+    "Product_Store_Sales_Total": 0
+  },
+  "exact_duplicate_rows": 0,
+  "extra_columns": [],
+  "product_id_format_mismatches": 0,
+  "target_summary": {
+    "count": 8763.0,
+    "mean": 3464.003640305831,
+    "std": 1065.6304944546334,
+    "min": 33.0,
+    "25%": 2761.715,
+    "50%": 3452.34,
+    "75%": 4145.165,
+    "max": 8000.0
+  },
+  "temporal_forecast_supported": false
+}

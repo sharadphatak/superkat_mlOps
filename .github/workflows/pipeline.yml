@@ -1,0 +1,118 @@
+name: SuperKart MLOps
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'data/*.csv'
+      - 'src/**'
+      - 'app.py'
+      - 'requirements*.txt'
+      - 'tools/**'
+      - 'Dockerfile'
+      - '.github/workflows/pipeline.yml'
+permissions:
+  contents: read
+concurrency:
+  group: superkart-main
+  cancel-in-progress: false
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m pip check && python tools/check_environment.py
+      - run: python -m src.validate_data
+      - uses: actions/upload-artifact@v4
+        with:
+          name: registration
+          path: reports/data_registration.json
+          if-no-files-found: error
+  prepare:
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - run: python -m src.prepare_data
+      - uses: actions/upload-artifact@v4
+        with:
+          name: train-test
+          path: data/processed/
+          if-no-files-found: error
+          retention-days: 14
+  train:
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m pip check && python tools/check_environment.py
+      - uses: actions/download-artifact@v5
+        with:
+          name: train-test
+          path: data/processed
+      - run: python -m src.train
+      - run: python -m pytest -q
+      - run: python -m tools.check_model
+      - uses: actions/upload-artifact@v4
+        with:
+          name: trained-model
+          path: |
+            models/
+            reports/
+          if-no-files-found: error
+          retention-days: 30
+  publish:
+    if: github.ref == 'refs/heads/main'
+    needs: train
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/download-artifact@v5
+        with:
+          name: trained-model
+      - name: Reject stale source before publishing
+        env:
+          TRAINED_SHA: ${{ github.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$TRAINED_SHA" || { echo 'main changed while training; run again on current main'; exit 1; }
+      - name: Commit model and experiment records to main
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add models reports
+          if ! git diff --cached --quiet; then
+            git commit -m 'Publish trained model and evaluation [skip ci]'
+            git push origin HEAD:main
+          fi
+      - uses: actions/setup-python@v6
+        if: vars.HF_SPACE_ID != ''
+        with:
+          python-version: '3.12'
+      - name: Publish Hugging Face Docker Space
+        if: vars.HF_SPACE_ID != ''
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_SPACE_ID: ${{ vars.HF_SPACE_ID }}
+        run: |
+          python -m pip install huggingface-hub==0.31.2
+          python tools/sync_space.py
